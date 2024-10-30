@@ -16,28 +16,24 @@ class MedianOfTwoSortedArrays {
         val leftHalfSize = (nums1.size + nums2.size) / 2
         fun other(i: Int): Int = leftHalfSize - i - 2
         fun result(mid: Int): Double =
-            if (isEven)
-                (
-                        max(nums1.safeGet(mid), nums2.safeGet(other(mid)))
-                                + min(nums1.safeGet(mid + 1), nums2.safeGet(other(mid) + 1))
-                        ).toDouble() / 2
-            else min(nums1.safeGet(mid + 1), nums2.safeGet(other(mid) + 1)).toDouble()
+            if (isEven) {
+                val left = max(nums1.safeGet(mid), nums2.safeGet(other(mid)))
+                val right = min(nums1.safeGet(mid + 1), nums2.safeGet(other(mid) + 1))
+                (left + right).toDouble() / 2
+            } else min(nums1.safeGet(mid + 1), nums2.safeGet(other(mid) + 1)).toDouble()
 
 
         var left = -1
         var right = nums1.size
 
         while (true) {
-            val mid = (left + right + 2) / 2 - 1
+            val mid = left + (right - left) / 2
             if (
                 nums1.safeGet(mid) <= nums2.safeGet(other(mid) + 1)
                 && nums2.safeGet(other(mid)) <= nums1.safeGet(mid + 1)
             ) return result(mid)
-            if (nums1.safeGet(mid) > nums2.safeGet(other(mid) + 1)) {
-                right = mid
-            } else {
-                left = mid + 1
-            }
+            if (nums1.safeGet(mid) > nums2.safeGet(other(mid) + 1)) right = mid
+            else left = mid + 1
         }
     }
 }
