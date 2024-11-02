@@ -12,6 +12,10 @@ class SubarraysWithKDifferentIntegers {
         else put(key, prev - 1)
     }
 
+    // An alternative way to write this is to notice that, if the problem asked about
+    // arrays that contain at most k distinct elements, the solution would be simpler to write.
+    // But from there we can derive a solution to our real problem, which is just
+    // atMost(nums, k) - atMost(nums, k-1)
     fun subarraysWithKDistinct(nums: IntArray, k: Int): Int {
         val leftICounts = mutableMapOf<Int, Int>()
         val rightICounts = mutableMapOf<Int, Int>()
