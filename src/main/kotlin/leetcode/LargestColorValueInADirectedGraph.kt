@@ -32,4 +32,20 @@ class LargestColorValueInADirectedGraph {
 
         return (0..<n).maxOf { helper(it, colors[it]) }
     }
+
+    fun largestPathValueRecursionDepth(colors: String, edges: Array<IntArray>): Int {
+        val n = colors.length
+        val successors = Array(n) { mutableListOf<Int>() }
+        for (edge in edges) successors[edge[0]].add(edge[1])
+
+        val memo = mutableMapOf<Pair<Int, Char>, Int>()
+        fun helper(node: Int, color: Char, recursionDepth: Int): Int? =
+            if (recursionDepth > n) null
+            else memo.getOrPut(node to color) {
+                (successors[node].maxOfOrNull { helper(it, color, recursionDepth + 1) ?: return null } ?: 0) +
+                        if (colors[node] == color) 1 else 0
+            }
+
+        return (0..<n).maxOf { helper(it, colors[it], 0) ?: return -1 }
+    }
 }
